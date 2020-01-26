@@ -39,7 +39,7 @@ if ($login['status'] == 'success')
     if ($data_target['status'] == 'success')
     {
 
-        echo color() ['LC'] . '[ * ] Target: ' . $data_target['username'] . ' | Name: ' . $data_target['fullname'] . '  | Followers: ' . $data_target['followers'] . ' | Following: ' . $data_target['following'] . ' | Post: ' . $data_target['post'] . ' [ * ] ' . PHP_EOL . PHP_EOL;
+        echo color() ['LC'] . '[ * ] Target: ' . $data_target['username'] . ' | Jenenge: ' . $data_target['fullname'] . '  | Followers: ' . $data_target['followers'] . ' | Following: ' . $data_target['following'] . ' | Post: ' . $data_target['post'] . ' [ * ] ' . PHP_EOL . PHP_EOL;
 
         $cmt = 0;
         for ($i = 1;$i < $data_target['followers'];$i++)
@@ -68,7 +68,7 @@ if ($login['status'] == 'success')
                     {
 
                         echo color() ["LG"] . "Follow Success | ";
-                        $sleep = 30;
+                        $sleep = 180;
                         $id_post = $post['id'];
 
                         $like = like($id_post, $data_login);
@@ -87,7 +87,7 @@ if ($login['status'] == 'success')
 
                              	$cmt = $cmt+1;
 								echo color()["LG"]."[ $cmt ] Comment Success: " . color()['MG'].$comment['text'] . color()['CY']." ".PHP_EOL;
-								$sleep = $sleep + 30;
+								$sleep = $sleep + 180;
 							}else{
 
 								echo color()["LR"]."Error comment :( | ";
