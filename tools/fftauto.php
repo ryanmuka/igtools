@@ -24,70 +24,62 @@ $username_target = getUsername('[?] Enter Username Target: ');
 
 echo '•••••••••••••••••••••••••••••••••••••••••' . PHP_EOL . PHP_EOL;
 $login = login($u, $p);
-if ($login['status'] == 'success')
-{
+if ($login['status'] == 'success') {
+	
+	echo color()["LG"].'[*] Login as '.$login['username'].' Success!' . PHP_EOL;
+	$data_login = array(
+		'username' => $login['username'],
+		'csrftoken'	=> $login['csrftoken'],
+		'sessionid'	=> $login['sessionid']
+	);
+	
+	$data_target = findProfile($username_target, $data_login);
+	
+	if ($data_target['status'] == 'success') {
+		
+		echo color()['LC'].'[*] Target: '.$data_target['username'].' | Name: '.$data_target['fullname'].'  | Followers: '.$data_target['followers'].' | Following: '.$data_target['following'].' | Post: '.$data_target['post'].' [*] '.PHP_EOL.PHP_EOL;
 
-    echo color() ["LG"] . '[ * ] Login as ' . $login['username'] . ' Success!' . PHP_EOL;
-    $data_login = array(
-        'username' => $login['username'],
-        'csrftoken' => $login['csrftoken'],
-        'sessionid' => $login['sessionid']
-    );
+		$cmt = 0;
+		for ($i=1; $i < $data_target['followers']; $i++) { 
+			
+			$profile = getFollowers($username_target , $data_login, $i, 1);
+			foreach ($profile as $rs) {
 
-    $data_target = findProfile($username_target, $data_login);
+				$id_user = $rs->id;
+				$username = $rs->username;
+				echo color()["LG"].'[+] Username: '.$username.' | ';
 
-    if ($data_target['status'] == 'success')
-    {
+				
+				$post = getPost($username, $data_login);
+				if ($post['status'] == 'error') {
+					
+					echo color()["LR"].'Error: '.ucfirst($post['details']).' | ' .PHP_EOL;
+				
+				}else{
 
-        echo color() ['LC'] . '[ * ] Target: ' . $data_target['username'] . ' | Jenenge: ' . $data_target['fullname'] . '  | Followers: ' . $data_target['followers'] . ' | Following: ' . $data_target['following'] . ' | Post: ' . $data_target['post'] . ' [ * ] ' . PHP_EOL . PHP_EOL;
+					$data_follow = ($f == 'y' OR 'y') ? follow($username, $data_login) : '' ;
+					if ($data_follow['status'] == 'success') {
 
-        $cmt = 0;
-        for ($i = 1;$i < $data_target['followers'];$i++)
-        {
+						echo color()["LG"]."Follow Success | ";
+						$sleep = 30;
+						$id_post = $post['id'];
 
-            $profile = getFollowers($username_target, $data_login, $i, 1);
-            foreach ($profile as $rs)
-            {
+						$like = like($id_post, $data_login);
+						if ($like['status'] == 'error') {
+							
+							echo color()["LR"]."Error Like :( | " . PHP_EOL;
+						}else{
 
-                $id_user = $rs->id;
-                $username = $rs->username;
-                echo color() ["LG"] . '[+] Username: ' . $username . ' | ';
+							echo color()["LG"]."Like Success | ";
+							shuffle($x);
+							$text = $x[0];
+							$comment = comment($id_post, $data_login, $text);
 
-                $post = getPost($username, $data_login);
-                if ($post['status'] == 'error')
-                {
-
-                    echo color() ["LR"] . 'Error: ' . ucfirst($post['details']) . ' | ' . PHP_EOL;
-
-                }
-                else
-                {
-
-                    $data_follow = ($f == 'y' or 'y') ? follow($username, $data_login) : '';
-                    if ($data_follow['status'] == 'success')
-                    {
-
-                        echo color() ["LG"] . "Follow Success | ";
-                        $sleep = 120;
-                        $id_post = $post['id'];
-
-                        $like = like($id_post, $data_login);
-                        if ($like['status'] == 'error')
-                        {
-
-                            echo color() ["LR"] . "Error Like :( | " . PHP_EOL;
-                        }else{
-
-                            echo color() ["LG"] . "Like Success | ";
-                            shuffle($x);
-                            $text = $x[0];
-                            $comment = comment($id_post, $data_login, $text);
-
-                            if ($comment['status'] == 'success') {
-
-                             	$cmt = $cmt+1;
+							if ($comment['status'] == 'success') {
+								
+								$cmt = $cmt+1;
 								echo color()["LG"]."[ $cmt ] Comment Success: " . color()['MG'].$comment['text'] . color()['CY']." ".PHP_EOL;
-								$sleep = $sleep + 120;
+								$sleep = $sleep + 30;
 							}else{
 
 								echo color()["LR"]."Error comment :( | ";
@@ -103,7 +95,7 @@ if ($login['status'] == 'success')
 							}
 						}
 					}else{
-					    
+
 						echo color()["LR"]."Follow Failed: ".ucfirst($data_follow['details'])." | " . PHP_EOL;
 						$sleep = 0;
 					}
