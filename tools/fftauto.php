@@ -68,7 +68,7 @@ if ($login['status'] == 'success')
                     {
 
                         echo color() ["LG"] . "Follow Success | ";
-                        $sleep = 180;
+                        $sleep = 120;
                         $id_post = $post['id'];
 
                         $like = like($id_post, $data_login);
@@ -87,7 +87,7 @@ if ($login['status'] == 'success')
 
                              	$cmt = $cmt+1;
 								echo color()["LG"]."[ $cmt ] Comment Success: " . color()['MG'].$comment['text'] . color()['CY']." ".PHP_EOL;
-								$sleep = $sleep + 180;
+								$sleep = $sleep + 120;
 							}else{
 
 								echo color()["LR"]."Error comment :( | ";
