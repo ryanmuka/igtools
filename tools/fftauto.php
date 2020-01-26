@@ -17,7 +17,7 @@ echo PHP_EOL;
 $text_comment = getComment('[?] Enter your file comment here: ');
 $getfile = file_get_contents($text_comment);
 $x = explode("|", $getfile);
-$c = count($x) - 1;
+$c = count($x) -1;
 echo '[?] Follow User? (enter Y OR y for YES, Enter any key for NO) : ';
 $f = trim(fgets(STDIN));
 $username_target = getUsername('[?] Enter Username Target: ');
