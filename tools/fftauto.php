@@ -18,9 +18,10 @@ $text_comment = getComment('[?] Enter your file comment here: ');
 $getfile = file_get_contents($text_comment);
 $x = explode("|", $getfile);
 $c = count($x) -1;
-echo '[?] Follow User? (enter Y OR y for YES, Enter any key for NO) : ';
+echo '[?] Follow User? (Enter Y or y for YES, Enter any key for NO) : ';
 $f = trim(fgets(STDIN));
 $username_target = getUsername('[?] Enter Username Target: ');
+
 echo '•••••••••••••••••••••••••••••••••••••••••' . PHP_EOL . PHP_EOL;
 $login = login($u, $p);
 if ($login['status'] == 'success')
